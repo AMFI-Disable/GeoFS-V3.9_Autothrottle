@@ -772,7 +772,7 @@
         }
 
         if (window.V39_NOTIF) {
-            window.V39_NOTIF.success("GeoFS-V3.9_Autothrottle v2.0.0 Loaded.");
+            window.V39_NOTIF.success("GeoFS-V3.9_Autothrottle V2.0.0 Loaded.");
         }
         console.log("[GeoFS-V3.9_Autothrottle] >> Autothrottle System Initialized.");
     }
