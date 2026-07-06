@@ -13,7 +13,6 @@ Professional-grade **Autothrottle** for **GeoFS-V3.9**. This module provides pre
 - **⚓ Landing Mode**: Renamed safety feature that automatically retards the throttle to idle upon touchdown.
 - **🕹️ Joystick Suppression**: Automatically blocks physical joystick/throttle axis input when active to prevent hardware interference.
 - **🎭 Modernized UI**: Features a compact, draggable glassmorphic panel and a legacy-style A/THR toggle on the Autopilot bar.
-- **🚀 V3.9 Foundation**: Fully compatible with the sequential loading pattern of the V3.9 Design System and Core Library.
 
 ## 🛠️ Installation
 
@@ -21,6 +20,6 @@ Professional-grade **Autothrottle** for **GeoFS-V3.9**. This module provides pre
 
 1. Install the [Tampermonkey](https://www.tampermonkey.net/) extension.
 2. Install the script via [**Greasy Fork**](https://greasyfork.org/en/scripts/581512-geofs-v3-9-autothrottle).
-3. Use the **A/THR** button on the Autopilot bar to open the control panel.
+3. Refresh GeoFS and the module will automatically initialize alongside the HUD.
 
 *© 2026 _init. Part of the [GeoFS-V3.9_Ecosystem](https://sites.google.com/view/geofs-v39-ecosystem/home).*
