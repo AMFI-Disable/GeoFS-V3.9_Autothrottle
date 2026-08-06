@@ -117,7 +117,7 @@
 // @copyright           2026, _init (https://greasyfork.org/users/1594049)
 
 // @namespace           https://greasyfork.org/users/1594049
-// @version             2.0.0
+// @version             2.0.1
 // @author              _init
 // @icon                https://geofs-assets.evengao6688.workers.dev/icons/autothrottle.png
 // @match               https://www.geo-fs.com/geofs.php*
@@ -139,7 +139,7 @@
  * © 2026 _init. Licensed under the MIT License.
  */
 
-(function() {
+(() => {
     function main () {
         geofs.autothrottle = {
             on: !1,
@@ -148,7 +148,7 @@
              * System Bootstrapper: Foundation & Callbacks
              * Injects styles, registers frame callbacks, and prepares the HUD panel.
              */
-            init: function () {
+            init: () => {
                 geofs.autothrottle.initStyles();
                 // Register high-frequency physics tick
                 geofs.autothrottle.callbackID = geofs.api.addFrameCallback(geofs.autothrottle.tickWrapper);
@@ -208,7 +208,7 @@
                  * System Synchronization Events
                  * Handlers for engagement/disengagement state changes.
                  */
-                $(document).on("autothrottleOn", function() {
+                $(document).on("autothrottleOn", () => {
                     geofs.autopilot.on && geofs.autopilot.turnOff();
                     clearTimeout(geofs.autothrottle.panelTimeout);
                     geofs.autopilot.setArm(!1); // Standard safety: Start with Landing Mode OFF.
@@ -264,12 +264,12 @@
                 });
 
                 // Triggered when the system is disengaged.
-                $(document).on("autothrottleOff", function() {
+                $(document).on("autothrottleOff", () => {
                     $("#autothrottle-button").removeClass("green-pad").addClass("red-pad");
                     $(".ext-autothrottle-controls").hide();
                     geofs.autothrottle.on = !1;
                     
-                    geofs.autothrottle.panelTimeout = setTimeout(function() {
+                    geofs.autothrottle.panelTimeout = setTimeout(() => {
                         $("#autothrottle-button").removeClass("red-pad");
                     }, 3000);
                     
@@ -321,7 +321,7 @@
                  * to prevent conflicting commands between the pilot and the PID controller.
                  */
                 const o = controls.axisSetters.throttle.process;
-                controls.axisSetters.throttle.process = function (e, t) {
+                controls.axisSetters.throttle.process = (e, t) => {
                     if (geofs.autothrottle.on) return;
                     o(e, t);
                 };
@@ -330,7 +330,7 @@
              * Injects the necessary CSS for the legacy bar button and panel states.
              * This ensures the addon looks correct even if the main design system is slow to load.
              */
-            initStyles: function () {
+            initStyles: () => {
                 const style = document.createElement("style");
                 style.innerHTML = `
                    .ext-autothrottle-pad {
@@ -470,7 +470,7 @@
              * Triggers the corresponding document events for synchronization.
              * Includes a pre-engagement validation check to ensure modes are selected.
              */
-            toggle: function () {
+            toggle: () => {
                 if (geofs.autothrottle.error) return;
                 
                 if (!geofs.autothrottle.on) {
@@ -503,7 +503,7 @@
              * @param {number} a - Integrated delta time (seconds).
              * @param {number} b - Frame delta time (milliseconds).
              */
-            tick: function (a, b) {
+            tick: (a, b) => {
                 // Physics scaling: Normalize delta based on simulation frequency
                 var A = clamp(Math.floor(b / geofs.api.renderingSettings.physicsDeltaMs), 1, 10)
                   , B = a / A;
@@ -572,7 +572,7 @@
                             errorBoost = (rawError / 10) * (1 + (rawError / 10000));
                         }
                         
-                        let targetMult = clamp(baseMult + errorBoost, 1, 1000000000);
+                        const targetMult = clamp(baseMult + errorBoost, 1, 1000000000);
                         
                         // Smoothly slide the multiplier towards the optimal target
                         window.opMultiplier += (targetMult - window.opMultiplier) * 0.15;
@@ -666,7 +666,7 @@
              * Manages the execution context for the PID loop and implements 
              * the Landing Mode (Auto-Retard) logic.
              */
-            tickWrapper: function (a) {
+            tickWrapper: (a) => {
                 if (geofs.autothrottle.on) {
                     // Electrical System Dependency: Immediate emergency cut if power is lost.
                     if (window.failureSimulator?.fails?.electrical) {
@@ -693,7 +693,7 @@
             /**
              * Standardized error handling to prevent the script from crashing the simulator.
              */
-            handleError: function (a) {
+            handleError: (a) => {
                 console.error(a);
                 ui.notification.show('An error with autothrottle occured, autothrottle is now disabled. Check console for more details.');
                 geofs.debug.log("meatbroc autothrottle error");
@@ -715,7 +715,7 @@
          * Custom Landing Mode (Arming) toggle.
          * Renamed to "Landing Mode" in the UI for better user understanding.
          */
-        geofs.autopilot.setArm = function (a) {
+        geofs.autopilot.setArm = (a) => {
             const b = JSON.parse(a);
             geofs.autothrottle.armed = b;
             $("#armOn").toggleClass("green-pad active", b);
@@ -772,7 +772,7 @@
         }
 
         if (window.V39_NOTIF) {
-            window.V39_NOTIF.success("GeoFS-V3.9_Autothrottle V2.0.0 Loaded.");
+            window.V39_NOTIF.success("GeoFS-V3.9_Autothrottle V2.0.1 Loaded.");
         }
         console.log("[GeoFS-V3.9_Autothrottle] >> Autothrottle System Initialized.");
     }
