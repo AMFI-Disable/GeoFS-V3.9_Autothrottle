@@ -165,7 +165,7 @@
                         </div>
                         <div class="ext-autothrottle-controls" style="display: none;">
                             <div class="ext-autothrottle-control" style="position: relative;">
-                                <div id="v39-at-rev" style="display: none; font-size: 8px; color: #ef4444; font-weight: 900; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); letter-spacing: 1px; text-shadow: 0 0 5px #ef4444;">[REV]</div>
+                                <div id="V39-at-rev" style="display: none; font-size: 8px; color: #ef4444; font-weight: 900; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); letter-spacing: 1px; text-shadow: 0 0 5px #ef4444;">[REV]</div>
                                 <a class="ext-autothrottle-numberDown numberDown ext-autothrottle-control">-</a><input class="ext-autothrottle-numberValue numberValue ext-autothrottle-speed" min="0" data-smallstep="5" data-stepthreshold="100" step="10" data-method="setSpeed" maxlength="4" max="9999" value="0"><a class="ext-autothrottle-numberUp numberUp">+</a>
                                 <span class="ext-autothrottle-switch ext-autothrottle-speedMode">
                                     <a class="ext-autothrottle-switchLeft switchLeft green-pad" data-method="setAutothrottleSpeedMode" value="knots" id="knotsMode">KTS</a>
@@ -260,7 +260,7 @@
                     if (window.V39_NOTIF) {
                         V39_NOTIF.success(`🛫 Autothrottle Engaged - Holding ${targetVal.toFixed(isMach ? 2 : 0)} ${isMach ? 'Mach' : 'Knots'}`);
                     }
-                    document.dispatchEvent(new CustomEvent('v39_autothrottleStateChanged', { detail: { active: !0 } }));
+                    document.dispatchEvent(new CustomEvent('V39_autothrottleStateChanged', { detail: { active: !0 } }));
                 });
 
                 // Triggered when the system is disengaged.
@@ -275,7 +275,7 @@
                     
                     if (geofs.autothrottle.opSyncActive) {
                         geofs.autothrottle.opSyncActive = false;
-                        document.dispatchEvent(new CustomEvent('v39_opSyncStateChanged', { detail: { active: false } }));
+                        document.dispatchEvent(new CustomEvent('V39_opSyncStateChanged', { detail: { active: false } }));
                         
                         if (globalThis.isThrustActive && window.toggleThrustMode) {
                             window.toggleThrustMode();
@@ -293,7 +293,7 @@
                     }
 
                     // Remove REV visual indicator in case it was active during disengagement
-                    $("#v39-at-rev").hide();
+                    $("#V39-at-rev").hide();
                     // Reset our tracking values to prevent spikes on subsequent engagements
                     geofs.autothrottle._lastFrameTime = null;
                     geofs.autothrottle._prevKias = null;
@@ -305,7 +305,7 @@
                     if (window.V39_NOTIF) {
                         V39_NOTIF.info("🛬 Autothrottle Disengaged - Control Returned to Pilot");
                     }
-                    document.dispatchEvent(new CustomEvent('v39_autothrottleStateChanged', { detail: { active: !1 } }));
+                    document.dispatchEvent(new CustomEvent('V39_autothrottleStateChanged', { detail: { active: !1 } }));
                 });
 
                 // Safety: Automatically disengage if the main Autopilot is turned on.
@@ -527,14 +527,14 @@
                         geofs.autothrottle._origReverse = geofs.aircraft.instance.definition.reverse;
                         geofs.aircraft.instance.definition.reverse = true;
                     }
-                    $("#v39-at-rev").show();
+                    $("#V39-at-rev").show();
                 } else if (f <= e * 1.05 && geofs.autothrottle.reverseEngaged) {
                     geofs.autothrottle.reverseEngaged = false;
                     // Restore original reverse property of aircraft definition
                     if (geofs.aircraft.instance.definition && geofs.autothrottle._origReverse !== undefined) {
                         geofs.aircraft.instance.definition.reverse = geofs.autothrottle._origReverse;
                     }
-                    $("#v39-at-rev").hide();
+                    $("#V39-at-rev").hide();
                 }
 
                 /**
@@ -558,7 +558,7 @@
                     
                     if (!geofs.autothrottle.opSyncActive) {
                         geofs.autothrottle.opSyncActive = true;
-                        document.dispatchEvent(new CustomEvent('v39_opSyncStateChanged', { detail: { active: true } }));
+                        document.dispatchEvent(new CustomEvent('V39_opSyncStateChanged', { detail: { active: true } }));
                     }
                     
                     if (globalThis.isThrustActive) {
@@ -580,13 +580,13 @@
                         window.opMultiplier = clamp(window.opMultiplier, 1, 1000000000);
                         
                         // Broadcast live updates to sync the Overpowered Engines UI
-                        document.dispatchEvent(new CustomEvent('v39_opMultiplierUpdated', { detail: { value: window.opMultiplier } }));
+                        document.dispatchEvent(new CustomEvent('V39_opMultiplierUpdated', { detail: { value: window.opMultiplier } }));
                     }
                 } else {
                     // Target is achievable within standard flight envelope
                     if (geofs.autothrottle.opSyncActive) {
                         geofs.autothrottle.opSyncActive = false;
-                        document.dispatchEvent(new CustomEvent('v39_opSyncStateChanged', { detail: { active: false } }));
+                        document.dispatchEvent(new CustomEvent('V39_opSyncStateChanged', { detail: { active: false } }));
                         
                         // Gracefully relinquish control and disable overpowered engines
                         if (globalThis.isThrustActive && window.toggleThrustMode) {
