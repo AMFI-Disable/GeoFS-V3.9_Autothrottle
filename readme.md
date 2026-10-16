@@ -6,6 +6,18 @@
 
 Professional-grade **Autothrottle** for **GeoFS-V3.9**. This module provides precision speed hold capabilities by implementing a custom **Local PID Controller Class** that regulates thrust with zero oscillation.
 
+---
+
+## ⚖️ Educational & Fair-Play Disclaimer
+
+> [!CAUTION]
+> **IMPORTANT NOTICE & DISCLAIMER**:
+> This codebase is provided strictly for educational, research, and testing purposes in authorized environments.
+> Using automated assistance or unauthorized scripts in violation of platform terms of service or anti-cheat policies may lead to account penalties.
+> The developers and contributors accept no responsibility or liability for misuse of this software.
+
+---
+
 ## ✨ Features
 
 - **🎯 Precision PID Control**: Calculus-based logic ensures smooth, realistic throttle transitions without "hunting" or overshooting.
