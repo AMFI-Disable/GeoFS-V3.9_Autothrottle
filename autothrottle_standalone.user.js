@@ -117,9 +117,9 @@
 // @copyright           2026, AMFI-Disable (https://greasyfork.org/users/1594049)
 
 // @namespace           https://greasyfork.org/users/1594049
-// @version             2.0.1
+// @version             2.0.4
 // @author              AMFI-Disable
-// @icon                https://geofs-assets.evengao6688.workers.dev/icons/autothrottle.png
+// @icon                https://www.geo-fs.com/images/icons/favicon.ico
 // @match               https://www.geo-fs.com/geofs.php*
 // @grant               none
 // @license             MIT
@@ -195,15 +195,15 @@
                                 </span>
                             </div>
                             <div class="geofs-autopilot-control" style="display: inline-block; vertical-align: bottom; margin-left: 5px; text-align: center;">
-                                <span style="display: block; font-size: 10px; font-weight: bold; color: #aaa; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px;">LND</span>
-                                <span class="ext-autothrottle-switch ext-autothrottle-mode" id="autothrottle-landing-mode-switch">
-                                    <a class="ext-autothrottle-switchLeft switchLeft green-pad" data-method="setArm" value="false" id="armOff">OFF</a>
-                                    <a class="ext-autothrottle-switchRight switchRight" data-method="setArm" value="true" id="armOn">ON</a>
+                                <span style="display: block; font-size: 10px; font-weight: bold; color: #aaa; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px;">LANDING</span>
+                                <span class="ext-autothrottle-switch ext-autothrottle-mode" id="autothrottle-landing-mode-switch" role="group" aria-label="Landing mode">
+                                    <a class="ext-autothrottle-switchLeft switchLeft landing-selected" data-method="setArm" value="false" id="armOff" role="button" tabindex="0" aria-pressed="true">OFF</a>
+                                    <a class="ext-autothrottle-switchRight switchRight" data-method="setArm" value="true" id="armOn" role="button" tabindex="0" aria-pressed="false">ARM</a>
                                 </span>
                             </div>
                         </div>
                         <div class="mdl-tooltip" id="autothrottle-tooltip" for="autothrottle-button">Toggle autothrottle on/off</div>
-                        <div class="mdl-tooltip" id="autothrottle-landing-mode-tooltip" for="autothrottle-landing-mode-switch">Landing Mode (Auto-Retard on touchdown)</div>
+                        <div class="mdl-tooltip" id="autothrottle-landing-mode-tooltip" for="autothrottle-landing-mode-switch">Landing mode: when armed, throttle goes to idle at touchdown</div>
                     </div>
                 `).appendTo(".geofs-autopilot-bar");
 
@@ -216,6 +216,14 @@
                     }
                 }
                 
+                // Keep the native-style landing switches usable from the keyboard.
+                $(document).on("keydown", "#autothrottle-landing-mode-switch a", (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        $(e.currentTarget).trigger("click");
+                    }
+                });
+
                 // Auto-select on focus/click
                 $(document).on("focus click", ".ext-autothrottle-speed", (e) => {
                     e.target.select();
@@ -484,6 +492,10 @@
                        border-color: #ef4444 !important;
                        box-shadow: 0 0 10px rgba(239, 68, 68, 0.4) !important;
                     }
+                    #autothrottle-landing-mode-switch .landing-selected {
+                       background: #555;
+                       border-color: #888;
+                    }
                 `;
                 document.head.appendChild(style);
             },
@@ -740,8 +752,8 @@
         geofs.autopilot.setArm = (a) => {
             const b = JSON.parse(a);
             geofs.autothrottle.armed = b;
-            $("#armOn").toggleClass("green-pad active", b);
-            $("#armOff").toggleClass("green-pad active", !b);
+            $("#armOn").toggleClass("green-pad active", b).attr("aria-pressed", String(b));
+            $("#armOff").toggleClass("landing-selected active", !b).attr("aria-pressed", String(!b));
         };
 
         /**
