@@ -50,7 +50,6 @@
 // @name:km             GeoFS-V3.9_ស្វ័យប្រវត្តិ
 // @name:lo             GeoFS-V3.9_Autothrottle
 // @name:ur             GeoFS-V3.9_آٹو-تھروٹل
-
 // @description         Precision PID-based Autothrottle for GeoFS. Features a compact glassmorphic panel and auto-retard Landing Mode. © 2026 AMFI-Disable. Part of the GeoFS-V3.9_Ecosystem.
 // @description:vi      Bộ điều khiển tự động dựa trên PID chính xác cho GeoFS. Có bảng điều khiển thủy tinh nhỏ gọn và Chế độ hạ cánh tự động chậm lại. © 2026 AMFI-Disable. Part of the GeoFS-V3.9_Ecosystem.
 // @description:zh-CN   用于 GeoFS 的基于 PID 的精密自动油门。具有紧凑的玻璃变形面板和自动延迟着陆模式。 © 2026 AMFI-Disable. Part of the GeoFS-V3.9_Ecosystem.
@@ -103,29 +102,38 @@
 // @description:lo      Autothrottle ທີ່ອີງໃສ່ Precision PID ສໍາລັບ GeoFS. ມີແຜງແກ້ວສະມໍຟິກຂະໜາດກະທັດຮັດ ແລະ ໂໝດຈອດລົດອັດຕະໂນມັດ. © 2026 AMFI-Disable. Part of the GeoFS-V3.9_Ecosystem.
 // @description:ur      جیو ایف ایس کے لیے پی آئی ڈی پر مبنی آٹو تھروٹل۔ ایک کمپیکٹ گلاس مورفک پینل اور آٹو ریٹارڈ لینڈنگ موڈ کی خصوصیات ہیں۔ © 2026 AMFI-Disable. Part of the GeoFS-V3.9_Ecosystem.
 
+// @namespace           https://greasyfork.org/users/1594049
+// @version             3.9.0
+// @author              AMFI-Disable
+// @homepageURL         https://sites.google.com/view/geofs-v39-ecosystem/home
+// @icon                https://www.geo-fs.com/images/icons/favicon.ico
+// @match               https://www.geo-fs.com/geofs.php*
 // @require             https://update.greasyfork.org/scripts/581510/code.js
 // @require             https://update.greasyfork.org/scripts/581511/code.js
-
-// @homepageURL         https://sites.google.com/view/geofs-v39-ecosystem/home
-// @connect             greasyfork.org
+// @grant               none
+// @license             MIT
+// @copyright           2026, AMFI-Disable (https://greasyfork.org/users/1594049)
 // @compatible          chrome
 // @compatible          firefox
 // @compatible          edge
 // @compatible          safari
 // @compatible          brave
 // @compatible          opera
-// @copyright           2026, AMFI-Disable (https://greasyfork.org/users/1594049)
-
-// @namespace           https://greasyfork.org/users/1594049
-// @version             2.0.4
-// @author              AMFI-Disable
-// @icon                https://www.geo-fs.com/images/icons/favicon.ico
-// @match               https://www.geo-fs.com/geofs.php*
-// @grant               none
-// @license             MIT
-// @downloadURL https://update.greasyfork.org/scripts/581512/GeoFS-V39_Autothrottle.user.js
-// @updateURL https://update.greasyfork.org/scripts/581512/GeoFS-V39_Autothrottle.meta.js
 // ==/UserScript==
+
+// Wait for GeoFS to report its version before executing any module code.
+// Unknown, older, and newer versions never activate this V3.9 release.
+(function waitForGeoFSVersion() {
+    const version = window.geofs?.version;
+    if (version === undefined || version === null || version === '') {
+        setTimeout(waitForGeoFSVersion, 250);
+        return;
+    }
+    if (!/^(?:v)?3\.9(?:\.\d+)*$/i.test(String(version).trim())) {
+        console.warn('[GeoFS-V3.9_Autothrottle] Inactive: GeoFS ' + version + ' is not V3.9.');
+        return;
+    }
+
 
 /**
  * GeoFS-V3.9_Autothrottle | Standalone
@@ -142,25 +150,21 @@
 (() => {
     /**
      * Runtime Version Guard: GeoFS-V3.9 Suite Compatibility
-     * Ensures this module only executes on GeoFS v3.9 or earlier, and gracefully
-     * deactivates if GeoFS v4.0+ is detected.
+     * Allows this module to execute only when GeoFS reports version 3.9.
      */
     function isUnsupportedGeoFS() {
         const raw = window.geofs?.version;
-        if (raw === undefined || raw === null) return false;
-        const clean = typeof raw === 'string' ? raw.replace(/^[^\d.]*/, '') : raw;
-        const num = typeof clean === 'number' ? clean : parseFloat(clean);
-        return !isNaN(num) && num >= 4.0;
+        return !/^(?:v)?3\.9(?:\.\d+)*$/i.test(String(raw ?? '').trim());
     }
 
     if (isUnsupportedGeoFS()) {
-        console.warn("[GeoFS-V3.9_Autothrottle] Inactive: GeoFS v" + window.geofs?.version + " detected (suite only supports GeoFS v3.9 and earlier).");
+        console.warn("[GeoFS-V3.9_Autothrottle] Inactive: GeoFS v" + window.geofs?.version + " detected (suite only supports GeoFS v3.9).");
         return;
     }
 
     function main () {
         if (isUnsupportedGeoFS()) {
-            console.warn("[GeoFS-V3.9_Autothrottle] Inactive: GeoFS v" + window.geofs?.version + " detected (suite only supports GeoFS v3.9 and earlier).");
+            console.warn("[GeoFS-V3.9_Autothrottle] Inactive: GeoFS v" + window.geofs?.version + " detected (suite only supports GeoFS v3.9).");
             return;
         }
         geofs.autothrottle = {
@@ -729,7 +733,8 @@
              */
             handleError: (a) => {
                 console.error(a);
-                ui.notification.show('An error with autothrottle occured, autothrottle is now disabled. Check console for more details.');
+                if (window.V39_NOTIF) window.V39_NOTIF.critical('Autothrottle error: disabled. Check the console for details.');
+                else ui.notification.show('Autothrottle error: disabled. Check the console for details.');
                 geofs.debug.log("meatbroc autothrottle error");
                 geofs.api.removeFrameCallback(geofs.autothrottle.callbackID);
                 $(document).trigger("autothrottleOff");
@@ -814,3 +819,5 @@
 })();
 
 
+
+})();

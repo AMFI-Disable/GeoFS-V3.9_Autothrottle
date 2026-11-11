@@ -1,37 +1,25 @@
-# **GeoFS-V3.9**_Autothrottle
+# GeoFS-V3.9_Autothrottle
 
-![Version](https://img.shields.io/badge/Version-V2.0.1-3b82f6?style=flat-square&logo=git&logoColor=white)
-![Ecosystem](https://img.shields.io/badge/GeoFS--V3.9-Autothrottle-06b6d4?style=flat-square&logo=target&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Stable-10b981?style=flat-square&logo=lighthouse&logoColor=white)
+![Version](https://img.shields.io/badge/Version-v3.9.0-3b82f6?style=flat-square)
 
-Professional-grade **Autothrottle** for **GeoFS-V3.9**. This module provides precision speed hold capabilities by implementing a custom **Local PID Controller Class** that regulates thrust with zero oscillation.
+Holds a selected speed in GeoFS with an automatic throttle controller.
 
----
+## Features
 
-## ⚖️ Educational & Fair-Play Disclaimer
+- Use **A/THR** on the GeoFS autopilot bar to open the controls and select knots or Mach.
+- Arm Landing Mode to retard the throttle to idle at touchdown.
+- The controller can coordinate with Overpowered Engines when that module is present.
 
-> [!CAUTION]
-> **IMPORTANT NOTICE & DISCLAIMER**:
-> This codebase is provided strictly for educational, research, and testing purposes in authorized environments.
-> Using automated assistance or unauthorized scripts in violation of platform terms of service or anti-cheat policies may lead to account penalties.
-> The developers and contributors accept no responsibility or liability for misuse of this software.
+## Installation
 
----
+1. Install a userscript manager such as [Tampermonkey](https://www.tampermonkey.net/).
+2. Install or update the script from [Greasy Fork](https://greasyfork.org/en/scripts/581512-geofs-v3-9-autothrottle).
+3. Open or reload GeoFS V3.9. The script starts automatically.
 
-## ✨ Features
+The script activates only when GeoFS reports version V3.9 (including V3.9 patch releases). It waits for the version to become available and remains inactive on other versions. Most standalone scripts load the Core Library and Design System as dependencies; the userscript manager handles those dependencies.
 
-- **🎯 Precision PID Control**: Calculus-based logic ensures smooth, realistic throttle transitions without "hunting" or overshooting.
-- **📟 Dual Mode Logic**: Toggle seamlessly between **Knots (KTS)** and **Mach (M)** with automatic unit conversion and sensitivity scaling.
-- **⚓ Landing Mode**: Renamed safety feature that automatically retards the throttle to idle upon touchdown.
-- **🕹️ Joystick Suppression**: Automatically blocks physical joystick/throttle axis input when active to prevent hardware interference.
-- **🎭 Modernized UI**: Features a compact, draggable glassmorphic panel and a legacy-style A/THR toggle on the Autopilot bar.
+The **GeoFS-V3.9_Ecosystem** panel shows startup status and notifications. Select × to dismiss it, or wait for it to disappear. A script listed as not detected is not necessarily uninstalled.
 
-## 🛠️ Installation
+## License
 
-### Standalone (Tampermonkey)
-
-1. Install the [Tampermonkey](https://www.tampermonkey.net/) extension.
-2. Install the script via [**Greasy Fork**](https://greasyfork.org/en/scripts/581512-geofs-v3-9-autothrottle).
-3. Refresh GeoFS and the module will automatically initialize alongside the HUD.
-
-*© 2026 AMFI-Disable. Part of the [**GeoFS-V3.9**_Ecosystem](https://sites.google.com/view/geofs-v39-ecosystem/home).*
+[MIT](license) · © 2026 AMFI-Disable · [GeoFS-V3.9 Ecosystem](https://sites.google.com/view/geofs-v39-ecosystem/home)
